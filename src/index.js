@@ -1,13 +1,32 @@
 import mongoose from "mongoose";
 import {DB_NAME} from "./constants.js"
-import dotenv from "dotenv";
+import connectDB from "../db/index.js";
 
-import express from "express"
+import dotenv from "dotenv";//Experimental feature
+
+
 const app = express()
 dotenv.config({
     path:'./env'
 });
 
+connectDB()
+.then(()=>{
+    app.listen(process.env.PORT||8000,()=>{
+        console.log(`SERVER IS RUNNING AT :${process.env.PORT}`);
+    })
+})
+.catch((err)=>{
+    console.log("MONGO DB CONNECTION FAILED",err);
+})
+
+
+
+
+
+
+
+/*              METHOD 1 FOR DB CONNECTION
 (async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI);
@@ -28,3 +47,4 @@ dotenv.config({
         process.exit(1);
     }
 })();
+*/
